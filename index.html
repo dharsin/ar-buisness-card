@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Premium Split AR Business Card</title>
     
-    <!-- Link to your external stylesheet -->
-    <link rel="stylesheet" href="./style.css">
-    
-    <!-- Core Engine & WebAR Libraries -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
@@ -28,6 +24,10 @@
         }
       });
     </script>
+    
+    <style>
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+    </style>
   </head>
 
   <body>
@@ -39,16 +39,10 @@
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <!-- Standard Media Mock Assets -->
         <img id="profilePic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80">
         <img id="videoMock" src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&h=250&q=80">
         
-        <!-- Clean White Pill Action Buttons -->
-        <img id="btnWeb" src="https://i.imgur.com/k6AUnXm.png">
-        <img id="btnIn" src="https://i.imgur.com/83p8xX4.png">
-
-        <!-- Exact Black-on-White Silhouette Icons Matching "Screenshot 2026-06-27 132626.jpg" -->
-        <img id="iconChat" src="https://i.imgur.com/h9xHbyS.png">
+        <img id="btnWeb" src="https://i.imgur.com/k6AUnXm.png"> <img id="btnIn" src="https://i.imgur.com/83p8xX4.png">  <img id="iconChat" src="https://i.imgur.com/h9xHbyS.png">
         <img id="iconPhone" src="https://i.imgur.com/0H7ySgU.png">
         <img id="iconTwit" src="https://i.imgur.com/HtwG0h0.png">
         <img id="iconMail" src="https://i.imgur.com/7gK6D6M.png">
@@ -61,12 +55,8 @@
         raycaster="objects: .clickable; far: 10000; interval: 100;">
       </a-camera>
 
-      <!-- --- MINDAR TARGET COMPONENT GRID --- -->
       <a-entity mindar-image-target="targetIndex: 0">
 
-        <!-- ========================================================= -->
-        <!-- 1. TOP RIGHT: AVATAR FRAME & PROFILE NAME                 -->
-        <!-- ========================================================= -->
         <a-circle src="#profilePic" position="0.45 0.35 0.01" radius="0.12" shader="flat"></a-circle>
         
         <a-text 
@@ -78,9 +68,7 @@
           position="0.65 0.35 0.01">
         </a-text>
 
-        <!-- ========================================================= -->
-        <!-- 2. BOTTOM LEFT: MAIN VIDEOGRAPHY CONTAINER                -->
-        <!-- ========================================================= -->
+
         <a-plane 
           class="clickable"
           url-opener="link: https://www.youtube.com/"
@@ -91,9 +79,7 @@
           shader="flat">
         </a-plane>
 
-        <!-- ========================================================= -->
-        <!-- 3. MIDDLE RIGHT: LONG PILL ROUTER BUTTONS                  -->
-        <!-- ========================================================= -->
+
         <a-plane 
           class="clickable" 
           url-opener="link: https://www.youtube.com/"
@@ -105,55 +91,40 @@
 
         <a-plane 
           class="clickable" 
-          url-opener="link: https://linkedin.com/"
+          url-opener="link: https://www.youtube.com/"
           position="0.55 -0.22 0.02" 
           width="0.48" height="0.13" 
           src="#btnIn"
           material="transparent: true; shader: flat;">
         </a-plane>
 
-        <!-- ========================================================= -->
-        <!-- 4. LOWER BOUND: EXACT ALIGNED UTILITY ICON DOCK          -->
-        <!-- ========================================================= -->
-        
-        <!-- BUTTON 1: CHAT SYSTEM LINK -->
+
         <a-circle 
           class="clickable" 
           url-opener="link: https://www.instagram.com/"
-          position="-0.25 -0.55 0.02" 
-          radius="0.08"
-          src="#iconChat" 
-          material="transparent: true; shader: flat;">
+          position="-0.25 -0.55 0.02" radius="0.08"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY-0y1vWRxqeWnurh214AIqYiQ08C9GjjTV9OBOg_BDw&s=10" material="transparent: true; shader: flat;">
         </a-circle>
 
-        <!-- BUTTON 2: VOICE ROUTER -->
         <a-circle 
           class="clickable" 
           url-opener="link: https://www.youtube.com/"
-          position="0.0 -0.55 0.02" 
-          radius="0.08"
-          src="#iconPhone" 
-          material="transparent: true; shader: flat;">
+          position="0.0 -0.55 0.02" radius="0.08"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLI0w79q7V2E-_V3RnVdlcvKPLZATQYCiWRJOMTHvRQw&s=10" material="transparent: true; shader: flat;">
         </a-circle>
 
-        <!-- BUTTON 3: MICROBLOGGING LINK -->
         <a-circle 
           class="clickable" 
           url-opener="link: https://x.com/"
-          position="0.25 -0.55 0.02" 
-          radius="0.08"
-          src="#iconTwit" 
-          material="transparent: true; shader: flat;">
+          position="0.25 -0.55 0.02" radius="0.08"
+          src="https://static.vecteezy.com/system/resources/previews/016/716/467/non_2x/twitter-icon-free-png.png" material="transparent: true; shader: flat;">
         </a-circle>
 
-        <!-- BUTTON 4: MAIL GATEWAY -->
         <a-circle 
           class="clickable" 
-          url-opener="link: mailto:your-email@domain.com"
-          position="0.5 -0.55 0.02" 
-          radius="0.08"
-          src="#iconMail" 
-          material="transparent: true; shader: flat;">
+          url-opener="link: https://brand.linkedin.com/linkedin-logo"
+          position="0.5 -0.55 0.02" radius="0.08"
+          src="https://cdn-icons-png.flaticon.com/512/4096/4096186.png" material="transparent: true; shader: flat;">
         </a-circle>
 
       </a-entity>
