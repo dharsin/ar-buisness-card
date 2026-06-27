@@ -1,25 +1,84 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pen</title>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Interactive AR Business Card</title>
+    
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <script>
+      // Custom script to handle clicking/tapping the AR icons
+      AFRAME.registerComponent('url-opener', {
+        schema: {
+          link: {type: 'string'}
+        },
+        init: function () {
+          const targetUrl = this.data.link;
+          this.el.addEventListener('click', function () {
+            // Opens your link safely in a new browser tab
+            window.open(targetUrl, '_blank');
+          });
+        }
+      });
+    </script>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    
+    <a-scene 
+      mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false"
+      raycaster="objects: .clickable; clickable-tolerance: 30">
+      
       <a-assets>
-	<img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" />
-	<a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/softmind/scene.gltf"></a-asset-item>
+        <img id="webIcon" src="./assets/website-icon.png">
+        <img id="linkedinIcon" src="./assets/linkedin-icon.png">
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-        <a-gltf-model rotation="0 0 0 " position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel"
-          animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
-        >
+        
+        <a-plane 
+          class="clickable" 
+          url-opener="link: https://yourwebsite.com"
+          position="-0.25 -0.2 0.02" 
+          rotation="0 0 0" 
+          width="0.18" 
+          height="0.18" 
+          src="#webIcon"
+          material="transparent: true; shader: flat;">
+        </a-plane>
+
+        <a-plane 
+          class="clickable" 
+          url-opener="link: https://linkedin.com/in/yourprofile"
+          position="0.25 -0.2 0.02" 
+          rotation="0 0 0" 
+          width="0.18" 
+          height="0.18" 
+          src="#linkedinIcon"
+          material="transparent: true; shader: flat;">
+        </a-plane>
+
       </a-entity>
     </a-scene>
   </body>
-</html> 
+</html>
