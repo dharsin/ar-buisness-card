@@ -3,31 +3,22 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>My Interactive AR Business Card</title>
+    <title>Premium Split AR Business Card</title>
     
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <script>
-      // Production-grade link component optimized for iOS Safari & Android Chrome
+      // Production-grade router component handling mobile browser breakouts cleanly
       AFRAME.registerComponent('url-opener', {
-        schema: {
-          link: {type: 'string'}
-        },
+        schema: { link: {type: 'string'} },
         init: function () {
           const targetUrl = this.data.link;
-          const el = this.el;
-          
-          // Using 'click' event mapped through the patched camera raycaster
-          el.addEventListener('click', function (evt) {
-            // Prevent event bubbling issues in 3D scene environments
-            evt.stopPropagation();
-            
-            // Fixes iOS Safari restrictions by changing window context directly or forcing standard open
+          this.el.addEventListener('click', function (evt) {
+            evt.stopPropagation(); 
             const newWindow = window.open(targetUrl, '_blank');
             if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-              // Fallback method if the browser pop-up blocker catches the tab redirect
-              window.location.href = targetUrl;
+              window.location.href = targetUrl; // Mobile pop-up blocker fallback
             }
           });
         }
@@ -35,13 +26,11 @@
     </script>
     
     <style>
-      /* Ensure full screen real-estate for the camera overlay stream */
       html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
     </style>
   </head>
 
   <body>
-    
     <a-scene 
       mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;" 
       color-space="sRGB" 
@@ -50,8 +39,13 @@
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <img id="webIcon" src="./assets/website-icon.png">
-        <img id="linkedinIcon" src="./assets/linkedin-icon.png">
+        <img id="profilePic" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80">
+        <img id="videoMock" src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&h=250&q=80">
+        
+        <img id="btnWeb" src="https://i.imgur.com/k6AUnXm.png"> <img id="btnIn" src="https://i.imgur.com/83p8xX4.png">  <img id="iconChat" src="https://i.imgur.com/h9xHbyS.png">
+        <img id="iconPhone" src="https://i.imgur.com/0H7ySgU.png">
+        <img id="iconTwit" src="https://i.imgur.com/HtwG0h0.png">
+        <img id="iconMail" src="https://i.imgur.com/7gK6D6M.png">
       </a-assets>
 
       <a-camera 
@@ -62,28 +56,76 @@
       </a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
+
+        <a-circle src="#profilePic" position="0.45 0.35 0.01" radius="0.12" shader="flat"></a-circle>
         
+        <a-text 
+          value="Matt\nWatson" 
+          align="left" 
+          width="2.5" 
+          color="#FFFFFF" 
+          font="cyber"
+          position="0.65 0.35 0.01">
+        </a-text>
+
+
+        <a-plane 
+          class="clickable"
+          url-opener="link: https://www.youtube.com/"
+          src="#videoMock" 
+          position="-0.35 -0.22 0.01" 
+          width="0.55" 
+          height="0.38" 
+          shader="flat">
+        </a-plane>
+
+
         <a-plane 
           class="clickable" 
-          url-opener="link: https://www.instagram.com//"
-          position="-0.3 -0.2 0.02" 
-          rotation="0 0 0" 
-          width="0.22" 
-          height="0.22" 
-          src="#webIcon"
-          material="transparent: true; shader: flat; opacity: 1.0;">
+          url-opener="link: https://www.youtube.com/"
+          position="0.55 -0.05 0.02" 
+          width="0.48" height="0.13" 
+          src="#btnWeb"
+          material="transparent: true; shader: flat;">
         </a-plane>
 
         <a-plane 
           class="clickable" 
           url-opener="link: https://www.youtube.com/"
-          position="0.3 -0.2 0.02" 
-          rotation="0 0 0" 
-          width="0.22" 
-          height="0.22" 
-          src="#linkedinIcon"
-          material="transparent: true; shader: flat; opacity: 1.0;">
+          position="0.55 -0.22 0.02" 
+          width="0.48" height="0.13" 
+          src="#btnIn"
+          material="transparent: true; shader: flat;">
         </a-plane>
+
+
+        <a-circle 
+          class="clickable" 
+          url-opener="link: https://www.youtube.com/"
+          position="-0.25 -0.55 0.02" radius="0.08"
+          src="#iconChat" material="transparent: true; shader: flat;">
+        </a-circle>
+
+        <a-circle 
+          class="clickable" 
+          url-opener="link: https://www.youtube.com/"
+          position="0.0 -0.55 0.02" radius="0.08"
+          src="#iconPhone" material="transparent: true; shader: flat;">
+        </a-circle>
+
+        <a-circle 
+          class="clickable" 
+          url-opener="link: https://www.youtube.com/"
+          position="0.25 -0.55 0.02" radius="0.08"
+          src="#iconTwit" material="transparent: true; shader: flat;">
+        </a-circle>
+
+        <a-circle 
+          class="clickable" 
+          url-opener="link: https://www.youtube.com/"
+          position="0.5 -0.55 0.02" radius="0.08"
+          src="#iconMail" material="transparent: true; shader: flat;">
+        </a-circle>
 
       </a-entity>
     </a-scene>
