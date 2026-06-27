@@ -1,68 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>My Interactive AR Business Card</title>
     
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <script>
-      // Custom script to handle clicking/tapping the AR icons
+      // Production-grade link component optimized for iOS Safari & Android Chrome
       AFRAME.registerComponent('url-opener', {
         schema: {
           link: {type: 'string'}
         },
         init: function () {
           const targetUrl = this.data.link;
-          this.el.addEventListener('click', function () {
-            // Opens your link safely in a new browser tab
-            window.open(targetUrl, '_blank');
+          const el = this.el;
+          
+          // Using 'click' event mapped through the patched camera raycaster
+          el.addEventListener('click', function (evt) {
+            // Prevent event bubbling issues in 3D scene environments
+            evt.stopPropagation();
+            
+            // Fixes iOS Safari restrictions by changing window context directly or forcing standard open
+            const newWindow = window.open(targetUrl, '_blank');
+            if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+              // Fallback method if the browser pop-up blocker catches the tab redirect
+              window.location.href = targetUrl;
+            }
           });
         }
       });
     </script>
+    
+    <style>
+      /* Ensure full screen real-estate for the camera overlay stream */
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+    </style>
   </head>
 
-  <body style="margin: 0; overflow: hidden;">
+  <body>
     
     <a-scene 
-      mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01;" 
+      mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;" 
       color-space="sRGB" 
-      renderer="colorManagement: true, physicallyCorrectLights" 
+      renderer="colorManagement: true, physicallyCorrectLights: true" 
       vr-mode-ui="enabled: false" 
-      device-orientation-permission-ui="enabled: false"
-      raycaster="objects: .clickable; clickable-tolerance: 30">
+      device-orientation-permission-ui="enabled: false">
       
       <a-assets>
         <img id="webIcon" src="./assets/website-icon.png">
         <img id="linkedinIcon" src="./assets/linkedin-icon.png">
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"></a-camera>
+      <a-camera 
+        position="0 0 0" 
+        look-controls="enabled: false" 
+        cursor="fuse: false; rayOrigin: mouse;"
+        raycaster="objects: .clickable; far: 10000; interval: 100;">
+      </a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
         
         <a-plane 
           class="clickable" 
           url-opener="link: https://www.youtube.com/"
-          position="-0.25 -0.2 0.02" 
+          position="-0.3 -0.2 0.02" 
           rotation="0 0 0" 
-          width="0.18" 
-          height="0.18" 
+          width="0.22" 
+          height="0.22" 
           src="#webIcon"
-          material="transparent: true; shader: flat;">
+          material="transparent: true; shader: flat; opacity: 1.0;">
         </a-plane>
 
         <a-plane 
           class="clickable" 
           url-opener="link: https://www.youtube.com/"
-          position="0.25 -0.2 0.02" 
+          position="0.3 -0.2 0.02" 
           rotation="0 0 0" 
-          width="0.18" 
-          height="0.18" 
+          width="0.22" 
+          height="0.22" 
           src="#linkedinIcon"
-          material="transparent: true; shader: flat;">
+          material="transparent: true; shader: flat; opacity: 1.0;">
         </a-plane>
 
       </a-entity>
