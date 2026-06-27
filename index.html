@@ -3,22 +3,31 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Premium AR Business Card Layout</title>
+    <title>My Interactive AR Business Card</title>
     
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <script>
-      // Component to handle mobile taps and redirection links
+      // Production-grade link component optimized for iOS Safari & Android Chrome
       AFRAME.registerComponent('url-opener', {
-        schema: { link: {type: 'string'} },
+        schema: {
+          link: {type: 'string'}
+        },
         init: function () {
           const targetUrl = this.data.link;
-          this.el.addEventListener('click', function (evt) {
+          const el = this.el;
+          
+          // Using 'click' event mapped through the patched camera raycaster
+          el.addEventListener('click', function (evt) {
+            // Prevent event bubbling issues in 3D scene environments
             evt.stopPropagation();
+            
+            // Fixes iOS Safari restrictions by changing window context directly or forcing standard open
             const newWindow = window.open(targetUrl, '_blank');
             if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-              window.location.href = targetUrl; // Fallback
+              // Fallback method if the browser pop-up blocker catches the tab redirect
+              window.location.href = targetUrl;
             }
           });
         }
@@ -26,78 +35,55 @@
     </script>
     
     <style>
+      /* Ensure full screen real-estate for the camera overlay stream */
       html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
     </style>
   </head>
 
   <body>
+    
     <a-scene 
-      mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01;" 
+      mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;" 
       color-space="sRGB" 
       renderer="colorManagement: true, physicallyCorrectLights: true" 
       vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false">
       
       <a-assets>
-        <a-asset-item id="avatarModel" src="./assets/avatar.glb"></a-asset-item>
-        
-        <img id="fbIcon" src="./assets/facebook-icon.png">
-        <img id="instaIcon" src="./assets/instagram-icon.png">
+        <img id="webIcon" src="./assets/website-icon.png">
         <img id="linkedinIcon" src="./assets/linkedin-icon.png">
-        <img id="showcasePortfolio" src="./assets/portfolio-preview.png">
       </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable;"></a-camera>
+      <a-camera 
+        position="0 0 0" 
+        look-controls="enabled: false" 
+        cursor="fuse: false; rayOrigin: mouse;"
+        raycaster="objects: .clickable; far: 10000; interval: 100;">
+      </a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
         
-        <a-entity 
-          gltf-model="#avatarModel" 
-          position="-0.7 -0.1 0.1" 
-          rotation="90 0 0" 
-          scale="0.4 0.4 0.4">
-        </a-entity>
-
-
-        <a-plane position="0 0.45 0.01" width="1.0" height="0.3" color="#3AA3F7" shader="flat">
-          <a-plane src="#showcasePortfolio" position="0 0 0.01" width="0.9" height="0.24" shader="flat"></a-plane>
-        </a-plane>
-
-
         <a-plane 
           class="clickable" 
           url-opener="link: https://www.youtube.com/"
-          position="-0.35 -0.5 0.02" 
-          width="0.2" height="0.2" 
-          src="#fbIcon"
-          material="transparent: true; shader: flat;">
+          position="-0.3 -0.2 0.02" 
+          rotation="0 0 0" 
+          width="0.22" 
+          height="0.22" 
+          src="#webIcon"
+          material="transparent: true; shader: flat; opacity: 1.0;">
         </a-plane>
 
         <a-plane 
           class="clickable" 
-          url-opener="link: https://www.youtube.com/"
-          position="0 -0.5 0.02" 
-          width="0.2" height="0.2" 
-          src="#instaIcon"
-          material="transparent: true; shader: flat;">
-        </a-plane>
-
-        <a-plane 
-          class="clickable" 
-          url-opener="link: https://www.youtube.com/"
-          position="0.35 -0.5 0.02" 
-          width="0.2" height="0.2" 
+          url-opener="link: https://www.thoughtflows.in/"
+          position="0.3 -0.2 0.02" 
+          rotation="0 0 0" 
+          width="0.22" 
+          height="0.22" 
           src="#linkedinIcon"
-          material="transparent: true; shader: flat;">
+          material="transparent: true; shader: flat; opacity: 1.0;">
         </a-plane>
-
-        <a-text 
-          value="MYWEBAR.COM\nAR MADE SIMPLE" 
-          align="center" 
-          width="2" 
-          color="#333333" 
-          position="0 -0.75 0.02">
-        </a-text>
 
       </a-entity>
     </a-scene>
