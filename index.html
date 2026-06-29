@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <script>
-      // Production-grade router component handling mobile browser breakouts cleanly
+      
       AFRAME.registerComponent('url-opener', {
         schema: { link: {type: 'string'} },
         init: function () {
@@ -18,7 +18,7 @@
             evt.stopPropagation(); 
             const newWindow = window.open(targetUrl, '_blank');
             if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-              window.location.href = targetUrl; // Mobile pop-up blocker fallback
+              window.location.href = targetUrl; 
             }
           });
         }
