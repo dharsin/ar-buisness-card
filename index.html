@@ -10,22 +10,19 @@
   <a-scene mindar-image="imageTargetSrc: ./tracker1.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     
     <a-assets>
-      <video id="myVideo" loop="true" src="./assets/bg.mp4" crossorigin="anonymous" playsinline></video>
+      <video id="myVideo" loop="true" src="./assets/bg.mp4" crossorigin="anonymous" playsinline muted="true" autoplay="true"></video>
     </a-assets>
-
-    <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse;" raycaster="objects: .clickable;"></a-camera>
-
+    
     <a-entity mindar-image-target="targetIndex: 0">
-      
-      <a-video class="clickable" 
+      <a-plane class="clickable" 
                src="#myVideo" 
                position="0 0 0" 
                width="0.99" height="0.6" 
-               play-on-click>
-      </a-video>
-
-      <a-text value="Tap to play video" align="center" position="0 -0.3 0" width="1"></a-text>
-
+               play-on-click
+               material="shader: flat; src: #myVideo;">
+      </a-plane>
+    
+      <a-text value="Tap to play video" align="center" position="0 -0.4 0" width="1"></a-text>
     </a-entity>
   </a-scene>
 
