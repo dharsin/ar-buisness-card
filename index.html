@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <script>
+    // Component to handle website redirects
     AFRAME.registerComponent('url-opener', {
       schema: { link: { type: 'string' } },
       init: function () {
@@ -23,6 +24,22 @@
         });
       }
     });
+
+    // Component to force video playback on interaction
+    AFRAME.registerComponent('video-controller', {
+      init: function () {
+        const video = document.querySelector('#bgVideo');
+        this.el.addEventListener('click', () => {
+          if (video.paused) {
+            video.play().then(() => {
+              console.log("Video playback started successfully.");
+            }).catch(e => {
+              console.error("Playback failed:", e);
+            });
+          }
+        });
+      }
+    });
   </script>
 
   <style>
@@ -32,6 +49,7 @@
 
 <body>
   <a-scene
+    video-controller
     mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;"
     color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
