@@ -5,6 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Premium Split AR Business Card</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -22,44 +32,49 @@
       }
     });
 
-    // Auto-initialize video on the first interaction
+    // Enhanced auto-play component
     AFRAME.registerComponent('video-auto-start', {
       init: function () {
         const video = document.querySelector('#bgVideo');
-        const startVideo = () => {
-          video.play();
-          window.removeEventListener('click', startVideo);
-          window.removeEventListener('touchstart', startVideo);
-        };
-        window.addEventListener('click', startVideo);
-        window.addEventListener('touchstart', startVideo);
+
+        // Attempt autoplay immediately
+        video.play().then(() => {
+          console.log("Autoplay started successfully.");
+        }).catch(error => {
+          console.warn("Autoplay blocked, waiting for user interaction.", error);
+
+          const startVideo = () => {
+            video.play();
+            window.removeEventListener('click', startVideo);
+            window.removeEventListener('touchstart', startVideo);
+          };
+          window.addEventListener('click', startVideo);
+          window.addEventListener('touchstart', startVideo);
+        });
       }
     });
   </script>
-
-  <style>
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-  </style>
 </head>
 
 <body>
-  <a-scene
-    video-auto-start
+  <a-scene video-auto-start
     mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;"
     color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <video id="bgVideo" 
-             src="./assets/bg1.mp4" 
-             loop="true" 
-             crossorigin="anonymous" 
-             playsinline 
-             webkit-playsinline 
-             muted 
-             autoplay>
+      <video id="bgVideo" src="./assets/bg1.mp4" loop="true" crossorigin="anonymous" playsinline webkit-playsinline
+        muted autoplay>
       </video>
     </a-assets>
+
+    
+
+    <a-assets>
+      <img id="rounded-bg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiByeT0iMjAiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==">
+    </a-assets>
+
+    
 
     <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
       raycaster="objects: .clickable; far: 10000; interval: 100;">
@@ -67,30 +82,44 @@
 
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <a-video class="clickable" 
-               src="#bgVideo" 
-               position="0 1 -0.5" 
-               width="1.13" 
-               height="0.6">
+      <a-video class="clickable" src="#bgVideo" position="0 0 0" width="1.13" height="0.6">
       </a-video>
 
-      <a-circle class="clickable" url-opener="link: https://www.instagram.com/" position="-0.4 -0.45 0.01"
-        radius="0.08" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY-0y1vWRxqeWnurh214AIqYiQ08C9GjjTV9OBOg_BDw&s=10"
+      <a-plane class="clickable" url-opener="link: https://www.yourwebsite.com"
+      position="0.8 0.12 0.01" width="0.4" height="0.12" color="#FF0000"
+      src="#rounded-bg" material="shader: flat; transparent: true;">
+      <a-text value="Visit Website" align="center" position="0 0 0.01" scale="0.2 0.2 0.2" color="#000000"></a-text>
+    </a-plane>
+    
+    <a-plane class="clickable" url-opener="link: mailto:info@yourdomain.com"
+      position="0.8 -0.12 0.01" width="0.4" height="0.12" color="#FF0000"
+      src="#rounded-bg" material="shader: flat; transparent: true;">
+      <a-text value="Email Us" align="center" position="0 0 0.01" scale="0.2 0.2 0.2" color="#000000"></a-text>
+    </a-plane>
+    
+   
+
+
+
+      <a-circle class="clickable" url-opener="link: https://www.instagram.com/" position="-0.4 -0.45 0.01" radius="0.08"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKv48K5MPkx6Gs8p4EccMhA18HxZj9Uu8fVkmzeiM5T5pl7tUC5rYfAZU&s=10"
         material="transparent: true; shader: flat;"></a-circle>
 
       <a-circle class="clickable" url-opener="link: https://www.youtube.com/" position="-0.15 -0.45 0.01" radius="0.08"
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLI0w79q7V2E-_V3RnVdlcvKPLZATQYCiWRJOMTHvRQw&s=10"
+        src="https://cdn-icons-png.flaticon.com/512/332/332472.png"
         material="transparent: true; shader: flat;"></a-circle>
 
       <a-circle class="clickable" url-opener="link: https://x.com/" position="0.10 -0.45 0.01" radius="0.08"
-        src="https://static.vecteezy.com/system/resources/previews/016/716/467/non_2x/twitter-icon-free-png.png"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5Un4LDp3tgS4-6tFL0hncc6tpi6mMsXEugxnlw3D4dg&s=10"
         material="transparent: true; shader: flat;"></a-circle>
 
       <a-circle class="clickable" url-opener="link: https://brand.linkedin.com/linkedin-logo" position="0.35 -0.45 0.01"
-        radius="0.08" src="https://cdn-icons-png.flaticon.com/512/4096/4096186.png"
+        radius="0.08"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdneLzeN3w2EUl4W7Ltc-pFZJSsdbVu8Bmp4a1--LHrmmWlNwqmn0hAm8&s=10"
         material="transparent: true; shader: flat;"></a-circle>
 
     </a-entity>
   </a-scene>
 </body>
+
 </html>
