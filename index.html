@@ -10,34 +10,29 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <script>
-    // Component to handle website redirects
+    // Handles URL redirection for your buttons
     AFRAME.registerComponent('url-opener', {
       schema: { link: { type: 'string' } },
       init: function () {
         const targetUrl = this.data.link;
         this.el.addEventListener('click', function (evt) {
           evt.stopPropagation();
-          const newWindow = window.open(targetUrl, '_blank');
-          if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-            window.location.href = targetUrl;
-          }
+          window.open(targetUrl, '_blank');
         });
       }
     });
 
-    // Component to force video playback on interaction
-    AFRAME.registerComponent('video-controller', {
+    // Auto-initialize video on the first interaction
+    AFRAME.registerComponent('video-auto-start', {
       init: function () {
         const video = document.querySelector('#bgVideo');
-        this.el.addEventListener('click', () => {
-          if (video.paused) {
-            video.play().then(() => {
-              console.log("Video playback started successfully.");
-            }).catch(e => {
-              console.error("Playback failed:", e);
-            });
-          }
-        });
+        const startVideo = () => {
+          video.play();
+          window.removeEventListener('click', startVideo);
+          window.removeEventListener('touchstart', startVideo);
+        };
+        window.addEventListener('click', startVideo);
+        window.addEventListener('touchstart', startVideo);
       }
     });
   </script>
@@ -49,7 +44,7 @@
 
 <body>
   <a-scene
-    video-controller
+    video-auto-start
     mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;"
     color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
@@ -60,6 +55,7 @@
              loop="true" 
              crossorigin="anonymous" 
              playsinline 
+             webkit-playsinline 
              muted 
              autoplay>
       </video>
@@ -72,32 +68,27 @@
     <a-entity mindar-image-target="targetIndex: 0">
 
       <a-video class="clickable" 
-               url-opener="link: https://www.youtube.com/" 
                src="#bgVideo" 
                position="0 0 0" 
                width="1.13" 
-               height="0.63">
+               height="0.6">
       </a-video>
 
       <a-circle class="clickable" url-opener="link: https://www.instagram.com/" position="-0.4 -0.45 0.01"
         radius="0.08" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY-0y1vWRxqeWnurh214AIqYiQ08C9GjjTV9OBOg_BDw&s=10"
-        material="transparent: true; shader: flat;">
-      </a-circle>
+        material="transparent: true; shader: flat;"></a-circle>
 
       <a-circle class="clickable" url-opener="link: https://www.youtube.com/" position="-0.15 -0.45 0.01" radius="0.08"
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLI0w79q7V2E-_V3RnVdlcvKPLZATQYCiWRJOMTHvRQw&s=10"
-        material="transparent: true; shader: flat;">
-      </a-circle>
+        material="transparent: true; shader: flat;"></a-circle>
 
       <a-circle class="clickable" url-opener="link: https://x.com/" position="0.10 -0.45 0.01" radius="0.08"
         src="https://static.vecteezy.com/system/resources/previews/016/716/467/non_2x/twitter-icon-free-png.png"
-        material="transparent: true; shader: flat;">
-      </a-circle>
+        material="transparent: true; shader: flat;"></a-circle>
 
       <a-circle class="clickable" url-opener="link: https://brand.linkedin.com/linkedin-logo" position="0.35 -0.45 0.01"
         radius="0.08" src="https://cdn-icons-png.flaticon.com/512/4096/4096186.png"
-        material="transparent: true; shader: flat;">
-      </a-circle>
+        material="transparent: true; shader: flat;"></a-circle>
 
     </a-entity>
   </a-scene>
