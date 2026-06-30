@@ -9,42 +9,58 @@
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+    #overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1000; display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); color: white; font-family: sans-serif;
+      cursor: pointer; text-align: center;
+    }
+  </style>
+
   <script>
-    // Handles URL redirection for your buttons
+    // Component to handle website redirects
     AFRAME.registerComponent('url-opener', {
       schema: { link: { type: 'string' } },
       init: function () {
         const targetUrl = this.data.link;
-        this.el.addEventListener('click', function (evt) {
+        this.el.addEventListener('click', (evt) => {
           evt.stopPropagation();
           window.open(targetUrl, '_blank');
         });
       }
     });
 
-    // Auto-initialize video on the first interaction
-    AFRAME.registerComponent('video-auto-start', {
+    // Component to handle video initialization and overlay removal
+    AFRAME.registerComponent('video-handler', {
       init: function () {
         const video = document.querySelector('#bgVideo');
-        const startVideo = () => {
+        const overlay = document.querySelector('#overlay');
+        
+        const startExperience = () => {
           video.play();
-          window.removeEventListener('click', startVideo);
-          window.removeEventListener('touchstart', startVideo);
+          overlay.style.display = 'none';
+          window.removeEventListener('click', startExperience);
+          window.removeEventListener('touchstart', startExperience);
         };
-        window.addEventListener('click', startVideo);
-        window.addEventListener('touchstart', startVideo);
+        
+        overlay.addEventListener('click', startExperience);
+        overlay.addEventListener('touchstart', startExperience);
       }
     });
   </script>
-
-  <style>
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-  </style>
 </head>
 
-<body>
+<body video-handler>
+  <div id="overlay">
+    <div>
+      <h1>Tap to Start Experience</h1>
+      <p>Please ensure your volume is on if applicable.</p>
+    </div>
+  </div>
+
   <a-scene
-    video-auto-start
     mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;"
     color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
@@ -56,8 +72,7 @@
              crossorigin="anonymous" 
              playsinline 
              webkit-playsinline 
-             muted 
-             autoplay>
+             muted>
       </video>
     </a-assets>
 
