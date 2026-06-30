@@ -9,7 +9,18 @@
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+    #overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1000; display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.85); color: white; font-family: sans-serif;
+      cursor: pointer; text-align: center;
+    }
+  </style>
+
   <script>
+    // Component to handle website redirects
     AFRAME.registerComponent('url-opener', {
       schema: { link: { type: 'string' } },
       init: function () {
@@ -21,26 +32,35 @@
       }
     });
 
-    // This attempts to play immediately, but will be blocked 
-    // by the browser until the first user interaction.
-    AFRAME.registerComponent('video-auto-start', {
+    // Component to handle video initialization and overlay removal
+    AFRAME.registerComponent('video-handler', {
       init: function () {
         const video = document.querySelector('#bgVideo');
-        video.play().catch(() => {
-          console.warn("Autoplay blocked by browser. Video will play on first tap.");
-        });
+        const overlay = document.querySelector('#overlay');
+        
+        const startExperience = () => {
+          video.play();
+          overlay.style.display = 'none';
+          window.removeEventListener('click', startExperience);
+          window.removeEventListener('touchstart', startExperience);
+        };
+        
+        overlay.addEventListener('click', startExperience);
+        overlay.addEventListener('touchstart', startExperience);
       }
     });
   </script>
-
-  <style>
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-  </style>
 </head>
 
-<body>
+<body video-handler>
+  <div id="overlay">
+    <div>
+      <h1>Tap to Start Experience</h1>
+      <p>Please ensure your volume is on if applicable.</p>
+    </div>
+  </div>
+
   <a-scene
-    video-auto-start
     mindar-image="imageTargetSrc: ./tracker1.mind; filterMinCF:0.001; filterBeta:0.01; uiLoading:yes; uiScanning:yes;"
     color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
@@ -64,7 +84,7 @@
 
       <a-video class="clickable" 
                src="#bgVideo" 
-               position="0 0 0" 
+               position="0  0" 
                width="1.13" 
                height="0.6">
       </a-video>
