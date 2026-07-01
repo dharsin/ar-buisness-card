@@ -71,7 +71,9 @@
     <a-assets>
       <img id="my-custom-image" src="./assets/bf 2.png">
     </a-assets>
-
+    <a-assets>
+      <img id="my-custom-image2" src=".\assets\services .png">
+    </a-assets>
 
     <a-assets>
   <img id="website-icon" src="https://thumbs.dreamstime.com/b/website-www-icon-isolated-black-background-simple-vector-logo-436207683.jpg">
@@ -90,8 +92,13 @@
 
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <a-video class="clickable" src="#bgVideo" position="0 0.62 0" width="1" height="0.55">
-      </a-video>
+      <a-video 
+      class="clickable" 
+      src="#bgVideo" 
+      position="0 0.6 0" 
+      width="1" 
+      height="0.55"
+      rotation="40 0 0"> </a-video>
 
       <a-plane class="clickable" url-opener="link: https://www.yourwebsite.com"
       position="0.8 0.12 0.01" width="0.4" height="0.12" color="#FF0000"
@@ -127,8 +134,10 @@
   </a-circle>
 
 
+  
 
-      <a-circle class="clickable" url-opener="link: https://www.instagram.com/" position="-0.4 -0.45 0.01" radius="0.08"
+
+      <a-circle class="clickable" url-opener="link: https://www.instagram.com/the_brandforge_digital" position="-0.4 -0.45 0.01" radius="0.08"
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKv48K5MPkx6Gs8p4EccMhA18HxZj9Uu8fVkmzeiM5T5pl7tUC5rYfAZU&s=10"
         material="transparent: true; shader: flat;"></a-circle>
 
@@ -147,12 +156,22 @@
 
         <a-image 
         src="#my-custom-image" 
-        position="-0.58 0 0.01" 
+        position="-0.58 0 0.05" 
         width="0.45" 
         height="0.09" 
         rotation="0 0 90" 
         transparent="true">
       </a-image>
+
+
+      <a-image 
+      src="#my-custom-image2" 
+      position="0 0 0" 
+      width="1" 
+      height="0.6" 
+      
+      transparent="true">
+    </a-image>
 
     </a-entity>
   </a-scene>
