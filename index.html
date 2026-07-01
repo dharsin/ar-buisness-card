@@ -68,7 +68,15 @@
       </video>
     </a-assets>
 
-    
+    <a-assets>
+      <img id="my-custom-image" src="./assets/bf 2.png">
+    </a-assets>
+
+
+    <a-assets>
+  <img id="website-icon" src="https://thumbs.dreamstime.com/b/website-www-icon-isolated-black-background-simple-vector-logo-436207683.jpg">
+  <img id="email-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM9ZYTVBm2TvAFQh0pPkxjFvvcvNtDI7Nk3TyqjhoGySO-wXL8XO-MBJE&s=10">
+</a-assets>
 
     <a-assets>
       <img id="rounded-bg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiByeT0iMjAiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPg==">
@@ -82,7 +90,7 @@
 
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <a-video class="clickable" src="#bgVideo" position="0 0 0" width="1.13" height="0.6">
+      <a-video class="clickable" src="#bgVideo" position="0 0.62 0" width="1" height="0.55">
       </a-video>
 
       <a-plane class="clickable" url-opener="link: https://www.yourwebsite.com"
@@ -98,6 +106,25 @@
     </a-plane>
     
    
+
+
+    <a-circle 
+    class="clickable" 
+    url-opener="link: https://www.yourwebsite.com" 
+    position="1.1 0.1 0" 
+    radius="0.08" 
+    src="#website-icon" 
+    material="transparent: true; shader: flat;">
+  </a-circle>
+  
+  <a-circle 
+    class="clickable" 
+    url-opener="link: mailto:info@yourdomain.com" 
+    position="1.1 -0.12 0" 
+    radius="0.08" 
+    src="#email-icon" 
+    material="transparent: true; shader: flat;">
+  </a-circle>
 
 
 
@@ -117,6 +144,15 @@
         radius="0.08"
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdneLzeN3w2EUl4W7Ltc-pFZJSsdbVu8Bmp4a1--LHrmmWlNwqmn0hAm8&s=10"
         material="transparent: true; shader: flat;"></a-circle>
+
+        <a-image 
+        src="#my-custom-image" 
+        position="-0.58 0 0.01" 
+        width="0.45" 
+        height="0.09" 
+        rotation="0 0 90" 
+        transparent="true">
+      </a-image>
 
     </a-entity>
   </a-scene>
